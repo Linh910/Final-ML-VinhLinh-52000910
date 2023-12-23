@@ -362,9 +362,40 @@ Trong mỗi vòng lặp, Adam tính toán gradient của hàm tại điểm hi�
 
 
  2) Tìm hiểu về Continual Learning và Test Production khi xây dựng một giải pháp học máy để giải quyết một bài toán nào đó
+  Continual Learning (CL) là một lĩnh vực nghiên cứu quan trọng trong machine learning mà mô hình học máy được thiết kế để liên tục học từ các tập dữ liệu mới mà nó gặp phải, mà không làm mất đi khả năng thích ứng với dữ liệu đã học được trước đó. 
+	Đặc trưng
+Continual Learning có những khả năng như:
+-	Khả năng học liên tục từ dữ liệu mới mà nó không quên tri thức đã học trước đó. 
+-	Khả năng thích ứng và đối mặt với sự thay đổi của môi trường và dữ liệu. 
+-	Khả năng học từ nhiều nhiệm vụ và từ miề dữ liệu
+-	Khả  năng tổng hợp kiến thức các nhiệm vụ và các  dữ liệu đã từng học
+	Đọ tin cậy
+Về độ tin cậy nó là một thách thức lớn, chính là mô hình có thể quên kiến thức cũ khi học từ dữ liệu mới. Thậm chí, đôi khi có khả năng mất độ tin cậy khi tích hợp dữ liệu mới, đó là hiện tượng quên mô hình(catastrophic Forgetting).
 
-    - Continual Learning là giúp mô hình duy trì và mở rộng kiến thức của mình theo thời gian, ngăn chặn hiện tượng quên mô hình (catastrophic forgetting) khi học từ các nguồn dữ liệu mới.
-   
-    - Test Production là một quy trình kiểm tra và triển khai các mô hình học máy trong môi trường sản xuất.
-   
-  Bài 2: 
+	Ưu điểm
+-	Có khả năng tích hợp và sử dụng lại kiến thức từ nhiều nguồn dữ liệu và nhiệm vụ
+-	Có thể giảm thiểu dữ liệu thừa bằng cách tận dụng lại thông tin đã đọc
+	Nhược điểm
+-	Thách thức lớn là do hiện tượng quên mô hình(catastrophic Forgetting) khiến cho mô hình mất đi kiến thức quan trong từ dữ liệu cũ.
+-	Nó có thể đòi hỏi về cả dữ liệu lận thời gian nhiều hơn so vơi mô hình thông thường.
+
+Trong khi Continual Learning mang lại nhiều lợi ích đối với sự linh hoạt và sự thích ứng, thách thức lớn nhất là làm thế nào để duy trì và sử dụng kiến thức từ dữ liệu cũ trong khi vẫn có khả năng học từ dữ liệu mới một cách hiệu quả. Điều này là một lĩnh vực nghiên cứu đang phát triển và đầy thách thức trong machine learning.
+
+
+Test production trong ngữ cảnh xây dựng một giải pháp học máy để giải quyết một bài toán cụ thể, chúng ta có thể liên quan đến việc thực hiện bài kiểm thử để đảm bảo rằng giải pháp đó đáp ứng yêu cầu chất lượng và hoạt động hiệu quả.
+	Đặc trưng
+-	Quá trình đánh giá hiệu suất của mô hình trên tập dữ liệu kiểm thử để đảm bảo rằng nó hoạt động chính xác và đáng tin cậy.
+-	Quá trình triển khai mô hình đã được đào tạo vào môi trường sản xuất để xử lý dữ liệu thực tế và tạo ra dự đoán cho ứng dụng thực tế.
+	Độ tin cậy
+-	Về sự hiệu suất, kiểm thử giúp đánh giá độ chính xác và hiệu suất của mô hình trước khi nó được triển khai.
+-	Kiểm thử giúp đánh giá xem mô hình có xu hướng quá mức học từ dữ liệu huấn luyện không hoặc có khả năng tổng quát hóa tốt trên dữ liệu mới hay không.
+
+	Ưu điểm
+-	Kiểm thử giúp đảm bảo rằng mô hình hoạt động đúng đắn và chính xác
+-	Kiểm soát rũi ro, quá trình kiểm thử giúp kiểm soát rủi ro và giảm thiểu sự cố trong quá trình triển khai.
+	Nhược điểm
+-	Quá trình kiểm thử và triển khai có thể tốn kém về chi phí và thời gian, đặc biệt là khi áp dụng các phương pháp chặt chẽ.
+-	Các mô hình phức tạp có thể khó kiểm thử và triển khai do độ phức tạp và tính linh hoạt cao
+-	Triển khai mô hình trong môi trường sản xuất có thể đặt ra các vấn đề về bảo mật, đặc biệt là khi xử lý dữ liệu nhạy cảm
+
+
