@@ -166,6 +166,200 @@ Trong đó:
 Trong mỗi vòng lặp, SGD chọn một mẫu ngẫu nhiên từ tập dữ liệu và tính toán gradient của hàm tại điểm hiện tại x_i dựa trên mẫu ngẫu nhiên đó. Sau đó, SGD cập nhật các tham số của hàm theo hướng giảm dần của gradient. Quá trình này được lặp lại cho đến khi đạt được điều kiện dừng, chẳng hạn như số lượng vòng lặp tối đa hoặc độ giảm của gradient nhỏ hơn một giá trị nhất định.
 
 
+Adagrad
+
+Adagrad là một biến thể của Gradient Descent (GD) được sử dụng để tối ưu hóa các hàm khả vi. Adagrad điều chỉnh tốc độ học của GD theo độ lớn của gradient của hàm tại điểm hiện tại. Adagrad có thể giúp GD tránh bị mắc kẹt trong các điểm cục bộ và hội tụ nhanh hơn GD.
+
+Đặc trưng của Adagrad:
+-	Tích lũy đạo hàm: Adagrad tích lũy bình phương của các đạo hàm trước đây để đánh giá mức độ quan trọng của các tham số. Các tham số có đạo hàm lớn hơn sẽ có tốc độ học giảm nhanh hơn, trong khi các tham số có đạo hàm nhỏ hơn sẽ có tốc độ học tăng lên.
+
+-	Điều chỉnh tốc độ học: Adagrad điều chỉnh tốc độ học cho từng tham số bằng cách chia tốc độ học cho căn bậc hai của tổng bình phương của đạo hàm đã tích lũy. Nó giúp giảm tốc độ học các tham số có đạo hàm lớn và tăng tốc độ học các tham số có đạo hàm nhỏ.
+
+-	Lịch sử đạo hàm: Adagrad lưu trữ lịch sử của các đạo hàm bằng cách tích lũy bình phương của chúng. Quá trình tích lũy này đảm bảo rằng các tham số có đạo hàm lớn sẽ có tốc độ học giảm dần theo thời gian.
+
+Độ tin cậy của Adagrad:
+ 
+Adagrad có thể giúp tìm giá trị tối ưu nhanh hơn trong quá trình huấn luyện vì nó tự điều chỉnh tốc độ học cho từng tham số dựa trên lịch sử của đạo hàm. Adagrad giúp giảm tốc độ học cho các tham số quan trọng và tăng tốc độ học cho các tham số ít quan trọng, từ đó cân nhắc giữa sự ổn định và sự hội tụ.
+
+•	Kiểu hàm mất mát: Một số hàm mất mát có thể khiến Adagrad dễ bị mắc kẹt trong các điểm cục bộ hơn các hàm mất mát khác.
+
+•	Kích thước dữ liệu: Adagrad có thể hoạt động tốt hơn với các tập dữ liệu lớn hơn.
+
+•	Số lượng tham số: Adagrad có thể hoạt động kém hiệu quả hơn với các mô hình có nhiều tham số.
+
+Giải thuật Adagrad:
+-	Khởi tạo các tham số ban đầu và một biến tích lũy (accumulator) khởi đầu bằng 0 cho mỗi tham số.
+-	Lặp lại cho đến khi đạt được điều kiện dừng (ví dụ: số lần lặp tối đa hoặc đạt đến giá trị mất mát nhỏ hơn một ngưỡng):
+o	Tính toán đạo hàm của hàm mất mát theo từng tham số.
+o	Cập nhật biến tích lũy bằng cộng dồn bình phương của đạo hàm.
+o	Cập nhật các tham số theo công thức: tham số mới = tham số cũ - (tốc độ học / căn bậc hai của biến tích lũy) * đạo hàm.
+-	Trả về giá trị tối ưu của các tham số.
+-	
+Code:
+
+        function adagrad(f, x0, learning_rate, max_iters)
+            h = zeros(size(x0))
+            for i = 1 to max_iters
+                g = gradient(f, x_i)
+                h = h + g * g
+                x_i = x_i - learning_rate / sqrt(h) * g
+            end for
+            return x_i
+        end function
+ 	
+Trong đó:
+•	f là hàm cần tối ưu hóa
+
+•	x0 là điểm khởi đầu
+
+•	learning_rate là tốc độ học
+
+•	max_iters là số lượng vòng lặp tối đa
+
+•	g là gradient của hàm tại điểm hiện tại x_i
+
+Trong mỗi vòng lặp, Adagrad tính toán gradient của hàm tại điểm hiện tại x_i. Sau đó, Adagrad cập nhật tốc độ học theo hướng giảm dần của gradient. Quá trình này được lặp lại cho đến khi đạt được điều kiện dừng, chẳng hạn như số lượng vòng lặp tối đa hoặc độ giảm của gradient nhỏ hơn một giá trị nhất định.
+
+
+RMSprop
+
+RMSprop là một biến thể của Adagrad được sử dụng để tối ưu hóa các hàm khả vi. RMSprop điều chỉnh tốc độ học của Adagrad theo độ lớn của gradient của hàm tại điểm hiện tại, nhưng không tính tổng bình phương của gradient như Adagrad. RMSprop có thể giúp Adagrad tránh bị mắc kẹt trong các điểm cục bộ và hội tụ nhanh hơn Adagrad.
+
+RMSprop được thiết kế để giảm độ dốc của hàm mất mát và điều chỉnh learning rate cho từng tham số.
+RMSprop sử dụng bình phương độ dốc trung bình để điều chỉnh tốc độ học, giúp thuật toán hội tụ nhanh hơn và tránh bị mắc kẹt ở các cực tiểu cục bộ.
+
+RMSprop giải quyết vấn đề tỷ lệ học giảm dần của Adagrad bằng cách chia tỷ lệ học cho trung bình của bình phương gradient. Nó tương tự như AdaGrad, RMSProp cũng điều chỉnh learning rate cho từng tham số.
+
+Đặc trưng của RMSprop:
+
+-	Tích lũy đạo hàm: RMSprop tích lũy bình phương của các đạo hàm trước đó để đánh giá mức độ quan trọng của các tham số tương tự như Adagrad. Tuy nhiên, RMSprop chỉ lưu trữ một số lượng đạo hàm gần đây nhất, thay vì tích lũy toàn bộ lịch sử.
+
+-	Điều chỉnh tốc độ học: RMSprop điều chỉnh tốc độ học cho từng tham số bằng cách chia tốc độ học cho căn bậc hai của tổng trung bình di động của bình phương các đạo hàm đã tích lũy. 
+
+
+-	Trọng số giảm dần: RMSprop áp dụng một hệ số giảm dần (decay rate) để định rõ mức độ quan trọng của các đạo hàm cũ hơn so với đạo hàm mới. Nó giúp mô hình tập trung vào thông tin mới nhất và loại bỏ sự ảnh hưởng của thông tin lỗi thời.
+
+Độ tin cậy của RMSprop:
+
+RMSprop có tính năng tương tự như Adagrad trong việc thích ứng tốc độ học cho từng tham số. Tuy nhiên, RMSprop giảm ảnh hưởng của đạo hàm nhiễu và chỉ lưu trữ một số lượng đạo hàm gần đây hơn, từ đó cải thiện tính ổn định của thuật toán.
+
+•	Kiểu hàm mất mát: Một số hàm mất mát có thể khiến Adam dễ bị mắc kẹt trong các điểm cục bộ hơn các hàm mất mát khác.
+
+•	Kích thước dữ liệu: Adam có thể hoạt động tốt hơn với các tập dữ liệu lớn hơn.
+
+•	Số lượng tham số: Adam có thể hoạt động kém hiệu quả hơn với các mô hình có nhiều tham số.
+
+Giải thuật RMSprop:
+
+-	Khởi tạo các tham số ban đầu và một biến tích lũy (accumulator) khởi đầu bằng 0 cho mỗi tham số.
+-	Lặp lại cho đến khi đạt được điều kiện dừng:
+o	Tính toán đạo hàm của hàm mất mát theo từng tham số.
+o	Cập nhật biến tích lũy bằng cộng dồn bình phương của đạo hàm.
+o	Cập nhật các tham số theo công thức: tham số mới = tham số cũ - (tốc độ học / căn bậc hai của biến tích lũy) * đạo hàm.
+o	Áp dụng trọng số giảm dần cho biến tích lũy.
+-	Trả về giá trị tối ưu của các tham số.
+
+Code: 
+
+
+    function rmsprop(f, x0, learning_rate, max_iters)
+        h = zeros(size(x0))
+        for i = 1 to max_iters
+            g = gradient(f, x_i)
+            h = (0.9 * h) + (0.1 * g * g)
+            x_i = x_i - learning_rate / sqrt(h) * g
+        end for
+        return x_i
+    end function
+
+
+Trong đó:
+
+•	f là hàm cần tối ưu hóa
+
+•	x0 là điểm khởi đầu
+
+•	learning_rate là tốc độ học
+
+•	max_iters là số lượng vòng lặp tối đa
+
+•	g là gradient của hàm tại điểm hiện tại x_i
+
+
+Trong mỗi vòng lặp, RMSprop tính toán gradient của hàm tại điểm hiện tại x_i. Sau đó, RMSprop tính toán bình phương của gradient và cập nhật tốc độ học theo hướng giảm dần của bình phương gradient. Quá trình này được lặp lại cho đến khi đạt được điều kiện dừng, chẳng hạn như số lượng vòng lặp tối đa hoặc độ giảm của gradient nhỏ hơn một giá trị nhất định.
+
+Adam
+
+Adam (Adaptive Moment Estimation) là một phương pháp tối ưu hóa trong quá trình huấn luyện mô hình machine learning, kết hợp cả Momentum và RMSprop. Adam được thiết kế để tự động điều chỉnh learning rate cho từng tham số dựa trên gradient và lịch sử của gradient. Adam giúp cải thiện tốc độ hội tụ và độ ổn định của mô hình.
+
+Đặc trưng của Adam:
+
+-	Tích lũy đạo hàm: Adam tích lũy bình phương của các đạo hàm trước đó tương tự như RMSprop. Nó giúp xác định mức độ quan trọng của các tham số.
+
+-	Điều chỉnh tốc độ học: Adam điều chỉnh tốc độ học cho từng tham số bằng cách sử dụng một phần tử động được gọi là "momentum". Momentum giúp lưu trữ thông tin về sự thay đổi của đạo hàm trong quá khứ, giúp mô hình di chuyển nhanh hơn trong các hướng có đạo hàm lớn và giảm đà trong các hướng có đạo hàm nhỏ.
+
+-	Bước điều chỉnh chuẩn hóa: Adam sử dụng một bước điều chỉnh chuẩn hóa để giảm ảnh hưởng của độ lớn khởi tạo ban đầu của các tham số. Đảm bảo rằng các tham số được điều chỉnh một cách nhất quán và tránh hiện tượng mất cân bằng trong quá trình huấn luyện.
+
+
+Độ tin cậy của Adam:
+Adam kết hợp tính ổn định của RMSprop và khả năng di chuyển nhanh của Momentum. Có thể giúp nó đạt được độ tin cậy cao trong quá trình tối ưu hóa mô hình máy học.
+
+•	Kiểu hàm mất mát: Một số hàm mất mát có thể khiến Adam dễ bị mắc kẹt trong các điểm cục bộ hơn các hàm mất mát khác.
+
+•	Kích thước dữ liệu: Adam có thể hoạt động tốt hơn với các tập dữ liệu lớn hơn.
+
+•	Số lượng tham số: Adam có thể hoạt động kém hiệu quả hơn với các mô hình có nhiều tham số.
+
+Giải thuật Adam:
+-	Khởi tạo các tham số ban đầu và hai biến tích lũy (accumulators) khởi đầu bằng 0 cho mỗi tham số.
+-	Lặp lại cho đến khi đạt được điều kiện dừng:
+o	Tính toán đạo hàm của hàm mất mát theo từng tham số.
+o	Cập nhật biến tích lũy thứ nhất bằng cộng dồn đạo hàm.
+o	Cập nhật biến tích lũy thứ hai bằng cộng dồn bình phương của đạo hàm.
+o	Hiệu chỉnh các biến tích lũy bằng lấy căn bậc hai và thêm một giá trị nhỏ để tránh chia cho 0.
+o	Cập nhật các tham số theo công thức: tham số mới = tham số cũ - (tốc độ học / căn bậc hai của biến tích lũy thứ hai) * biến tích lũy thứ nhất.
+-	Trả về giá trị tối ưu của các tham số.
+Code:
+
+
+
+
+          function adam(f, x0, learning_rate, beta1, beta2, epsilon, max_iters)
+              m = zeros(size(x0))
+              v = zeros(size(x0))
+              for i = 1 to max_iters
+                  g = gradient(f, x_i)
+                  m = (1 - beta1) * g + beta1 * m
+                  v = (1 - beta2) * g * g + beta2 * v
+                  x_i = x_i - learning_rate * m / sqrt(v + epsilon)
+              end for
+              return x_i
+          end function
+
+
+
+
+
+Trong đó:
+
+•	f là hàm cần tối ưu hóa
+
+•	x0 là điểm khởi đầu
+
+•	learning_rate là tốc độ học
+
+•	beta1 là tham số điều chỉnh tốc độ học ban đầu
+
+•	beta2 là tham số điều chỉnh tốc độ học theo thời gian
+
+•	epsilon là hằng số để tránh chia cho 0
+
+•	max_iters là số lượng vòng lặp tối đa
+
+•	g là gradient của hàm tại điểm hiện tại x_i
+
+Trong mỗi vòng lặp, Adam tính toán gradient của hàm tại điểm hiện tại x_i. Sau đó, Adam cập nhật các tham số của hàm theo hướng giảm dần của gradient, điều chỉnh tốc độ học theo hướng giảm dần của bình phương gradient. Quá trình này được lặp lại cho đến khi đạt được điều kiện dừng, chẳng hạn như số lượng vòng lặp tối đa hoặc độ giảm của gradient nhỏ hơn một giá trị nhất định.
+
 
  2) Tìm hiểu về Continual Learning và Test Production khi xây dựng một giải pháp học máy để giải quyết một bài toán nào đó
 
