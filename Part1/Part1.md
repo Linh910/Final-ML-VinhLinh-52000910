@@ -3,7 +3,7 @@ Bài 1:
 
 1)	Tìm hiểu, so sánh các phương pháp Optimizer trong huấn luyện mô hình học máy
 
-  Optimizer  là các thuật toán điều chỉnh các tham số của mô hình trong quá trình huấn luyện để giảm thiểu hàm mất(loss function). 
+  Optimizer  là các thuật toán điều chỉnh các tham số của mô hình trong quá trình huấn luyện để giảm thiểu hàm mất(loss function). là cơ sở để xây dựng mô hình neural network với mục đích "học" được các features hoặc pattern của dữ liệu đầu vào, từ đó có thể tìm 1 cặp weights và bias phù hợp để tối ưu hóa model.
 
 Các phương pháp của Optimizer: 
 
